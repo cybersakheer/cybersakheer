@@ -1,0 +1,2283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlinkCodex | Projects & Digital Solutions</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080b09;
+            --surface: #101512;
+            --surface-2: #151d18;
+            --green: #39e98a;
+            --green-dark: #20b96a;
+            --text: #f4f8f5;
+            --muted: #929e96;
+            --border: rgba(255,255,255,0.09);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(30px, 4vw, 48px);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            max-width: 580px;
+            line-height: 1.8;
+        }
+
+        .text-green {
+            color: var(--green);
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .main-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            background: rgba(8, 11, 9, 0.92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+        }
+
+        .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+
+        .brand:hover {
+            color: var(--text);
+        }
+
+        .navbar-logo {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            border-radius: 9px;
+        }
+
+        .brand-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+        }
+
+        .brand-name span {
+            color: var(--green);
+        }
+
+        .nav-icon-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface);
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-icon-btn:hover {
+            color: var(--green);
+            border-color: var(--green);
+        }
+
+        .talk-btn {
+            background: var(--green);
+            color: #07110b;
+            border: none;
+            padding: 10px 19px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+
+        .talk-btn:hover {
+            background: #fff;
+            color: #07110b;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           TOP QUICK BAR
+        ========================= */
+
+        .top-quick-bar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            z-index: 1040;
+            padding: 18px 20px;
+            background: rgba(15, 21, 17, 0.98);
+            border-bottom: 1px solid var(--border);
+            transform: translateY(-120%);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.35s ease;
+        }
+
+        .top-quick-bar.show {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .quick-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .quick-links a {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 9px 15px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .quick-links a:hover {
+            color: var(--green);
+            background: rgba(57,233,138,0.08);
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            z-index: 1090;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 290px;
+            max-width: 85%;
+            height: 100vh;
+            height: 100dvh;
+            background: #101612;
+            border-right: 1px solid var(--border);
+            z-index: 1100;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-105%);
+            transition: 0.35s ease;
+        }
+
+        .side-panel.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+
+        .side-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .side-logo img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .side-logo strong {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 19px;
+        }
+
+        .side-menu-title {
+            color: #647169;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .side-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .side-menu a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 13px;
+            border-radius: 7px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .side-menu a i {
+            font-size: 16px;
+        }
+
+        .side-menu a:hover,
+        .side-menu a.active {
+            background: rgba(57,233,138,0.09);
+            color: var(--green);
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-bottom p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-socials {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sidebar-socials a {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--muted);
+            transition: 0.3s;
+        }
+
+        .sidebar-socials a:hover {
+            color: var(--green);
+            border-color: var(--green);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 510px;
+            padding: 115px 0 95px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 15%, rgba(57,233,138,0.11), transparent 55%),
+                var(--bg);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border: 1px solid rgba(57,233,138,0.08);
+            border-radius: 50%;
+            top: -250px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 50px rgba(57,233,138,0.015),
+                        0 0 0 100px rgba(57,233,138,0.01);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(48px, 9vw, 90px);
+            font-weight: 700;
+            letter-spacing: -5px;
+            line-height: 1.05;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: var(--green);
+        }
+
+        .hero-description {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-primary-custom {
+            background: var(--green);
+            color: #07110b;
+            border: 1px solid var(--green);
+            padding: 13px 23px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+
+        .btn-primary-custom:hover {
+            background: transparent;
+            color: var(--green);
+        }
+
+        .btn-outline-custom {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 13px 23px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-outline-custom:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-section {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: #0c110e;
+            padding: 30px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* =========================
+           PROJECTS
+        ========================= */
+
+        .projects-section {
+            padding: 100px 0;
+        }
+
+        .project-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 38px;
+        }
+
+        .project-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 35px;
+        }
+
+        .filter-btn {
+            padding: 9px 17px;
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.25s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--green);
+            color: #07110b;
+            border-color: var(--green);
+        }
+
+        .project-card {
+            height: 100%;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: 0.35s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(57,233,138,0.45);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .project-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            background: #17221b;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.06);
+        }
+
+        .project-number {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            background: rgba(8,11,9,0.85);
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .project-category {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            background: rgba(8,11,9,0.85);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .project-content {
+            padding: 22px;
+        }
+
+        .project-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-content p {
+            min-height: 48px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .project-tech span {
+            padding: 5px 9px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            color: #aab7ae;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 800;
+            transition: 0.25s;
+        }
+
+        .project-link:hover {
+            color: #fff;
+            gap: 13px;
+        }
+
+        .project-card.hide {
+            display: none;
+        }
+
+        /* =========================
+           SERVICES
+        ========================= */
+
+        .services-section {
+            background: #0c110e;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .service-card {
+            height: 100%;
+            padding: 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--green);
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            background: rgba(57,233,138,0.09);
+            color: var(--green);
+            border-radius: 9px;
+            font-size: 21px;
+            margin-bottom: 23px;
+        }
+
+        .service-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* =========================
+           PROCESS
+        ========================= */
+
+        .process-card {
+            padding: 25px;
+            height: 100%;
+            border-left: 1px solid rgba(57,233,138,0.35);
+            background: linear-gradient(90deg, rgba(57,233,138,0.045), transparent);
+        }
+
+        .process-number {
+            color: var(--green);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 17px;
+        }
+
+        .process-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .process-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta-section {
+            padding: 75px 0;
+        }
+
+        .cta-box {
+            position: relative;
+            overflow: hidden;
+            padding: 65px 30px;
+            text-align: center;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(57,233,138,0.15), transparent 65%),
+                var(--surface);
+            border: 1px solid rgba(57,233,138,0.2);
+            border-radius: 15px;
+        }
+
+        .cta-box h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 550px;
+            margin: 0 auto 25px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            padding: 55px 0 25px;
+            background: #060907;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .footer-brand span {
+            color: var(--green);
+        }
+
+        .footer-description {
+            max-width: 350px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .footer-title {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            font-size: 12px;
+            transition: 0.25s;
+        }
+
+        .footer-links a:hover {
+            color: var(--green);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 45px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-bottom p {
+            color: #718077;
+            font-size: 11px;
+            margin: 0;
+        }
+
+        /* =========================
+           WHATSAPP
+        ========================= */
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            background: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 23px;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(37,211,102,0.25);
+            transition: 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-5px);
+            color: #fff;
+        }
+
+        /* =========================
+           SCROLL REVEAL
+        ========================= */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 767px) {
+
+            .section-padding,
+            .projects-section {
+                padding: 70px 0;
+            }
+
+            .hero {
+                min-height: 440px;
+                padding: 90px 0 75px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2.5px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .project-heading {
+                align-items: start;
+            }
+
+            .project-image {
+                height: 170px;
+            }
+
+            .project-content {
+                padding: 15px;
+            }
+
+            .project-content h3 {
+                font-size: 16px;
+            }
+
+            .project-content p {
+                font-size: 12px;
+                min-height: 65px;
+            }
+
+            .project-tech span {
+                font-size: 9px;
+            }
+
+            .filter-btn {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+
+            .stats-section {
+                padding: 20px 0;
+            }
+
+            .stat-number {
+                font-size: 25px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+
+            .cta-box {
+                padding: 45px 20px;
+            }
+
+            .top-quick-bar {
+                top: 67px;
+            }
+
+            .quick-links {
+                gap: 5px;
+            }
+
+            .quick-links a {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .navbar-logo {
+                width: 32px;
+                height: 32px;
+            }
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .navbar-left,
+            .navbar-right {
+                gap: 8px;
+            }
+
+            .talk-btn {
+                padding: 9px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .project-image {
+                height: 140px;
+            }
+
+            .project-content {
+                padding: 12px;
+            }
+
+            .project-content h3 {
+                font-size: 14px;
+            }
+
+            .project-content p {
+                font-size: 11px;
+            }
+
+            .brand-name {
+                font-size: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="main-navbar">
+        <div class="container">
+            <div class="navbar-inner">
+
+                <div class="navbar-left">
+
+                    <button class="nav-icon-btn"
+                            id="sidebarToggle"
+                            aria-label="Open sidebar"
+                            aria-expanded="false">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <a href="#" class="brand">
+                        <img src="images/logo.png"
+                             alt="BlinkCodex Logo"
+                             class="navbar-logo">
+
+                        <span class="brand-name">
+                            Blink<span>Codex</span>
+                        </span>
+                    </a>
+
+                </div>
+
+                <div class="navbar-right">
+
+                    <button class="nav-icon-btn"
+                            id="topbarToggle"
+                            aria-label="Open quick navigation"
+                            aria-expanded="false">
+                        <i class="bi bi-chevron-down" id="topbarIcon"></i>
+                    </button>
+
+                    <a href="#contact" class="talk-btn">
+                        Let's Talk <i class="bi bi-arrow-up-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         TOP QUICK BAR
+    ========================= -->
+
+    <div class="top-quick-bar" id="topQuickBar">
+        <div class="container">
+            <div class="quick-links">
+
+                <a href="#home">Home</a>
+                <a href="#projects">Projects</a>
+                <a href="#services">Services</a>
+                <a href="#process">Our Process</a>
+                <a href="#contact">Contact</a>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="side-panel" id="sidePanel">
+
+        <div class="sidebar-header">
+
+            <div class="side-logo">
+                <img src="images/logo.png" alt="BlinkCodex Logo">
+
+                <strong>
+                    Blink<span class="text-green">Codex</span>
+                </strong>
+            </div>
+
+            <button class="nav-icon-btn"
+                    id="sidebarClose"
+                    aria-label="Close sidebar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <p class="side-menu-title">NAVIGATION</p>
+
+        <div class="side-menu">
+
+            <a href="#home" class="active">
+                <i class="bi bi-house"></i> Home
+            </a>
+
+            <a href="#projects">
+                <i class="bi bi-grid"></i> Projects
+            </a>
+
+            <a href="#services">
+                <i class="bi bi-code-slash"></i> Services
+            </a>
+
+            <a href="#process">
+                <i class="bi bi-diagram-3"></i> Our Process
+            </a>
+
+            <a href="#contact">
+                <i class="bi bi-chat-dots"></i> Contact
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <p>
+                Building practical digital products
+                through design, development and technology.
+            </p>
+
+            <div class="sidebar-socials">
+
+                <a href="#" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+
+                <a href="#" aria-label="Facebook">
+                    <i class="bi bi-facebook"></i>
+                </a>
+
+                <a href="#" aria-label="LinkedIn">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+
+                <a href="#" aria-label="GitHub">
+                    <i class="bi bi-github"></i>
+                </a>
+
+            </div>
+
+            <p class="mt-4 mb-0">
+                © <span id="sidebarYear"></span> BlinkCodex
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero" id="home">
+
+        <div class="container hero-content reveal">
+
+            <h1>
+                Blink<span>Codex</span>
+            </h1>
+
+            <p class="hero-description">
+                We design and develop digital experiences that
+                bring ideas to life. Explore our selected projects
+                across web development, mobile applications and
+                digital solutions.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#projects" class="btn-primary-custom">
+                    Explore Projects
+                    <i class="bi bi-arrow-down-right"></i>
+                </a>
+
+                <a href="#contact" class="btn-outline-custom">
+                    Start a Project
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         STATS
+    ========================= -->
+
+    <section class="stats-section">
+        <div class="container">
+
+            <div class="row g-3">
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">09+</div>
+                        <div class="stat-label">Selected Projects</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">05+</div>
+                        <div class="stat-label">Technologies</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Commitment</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Digital Mindset</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =========================
+         PROJECTS
+    ========================= -->
+
+    <section class="projects-section" id="projects">
+
+        <div class="container">
+
+            <div class="project-heading reveal">
+
+                <div>
+                    <p class="section-label" style="text-align: center;">SELECTED WORK</p>
+
+                    <h2 class="section-title" style="text-align: center;">
+                        Projects we've <span class="text-green">Built.</span>
+                    </h2>
+
+                    <p class="section-description mt-3 mb-0" style="text-align: center;">
+                        A selection of digital products, websites
+                        and development projects.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- FILTERS -->
+
+            <div class="project-filters reveal">
+
+                <button class="filter-btn active" data-filter="all">
+                    All Projects
+                </button>
+
+                <button class="filter-btn" data-filter="web">
+                    Web Design
+                </button>
+
+                <button class="filter-btn" data-filter="development">
+                    Development
+                </button>
+
+                <button class="filter-btn" data-filter="business">
+                    Business
+                </button>
+
+                <button class="filter-btn" data-filter="education">
+                    Education
+                </button>
+
+            </div>
+
+
+            <!-- PROJECT GRID -->
+
+            <div class="row g-3 g-md-4" id="projectGrid">
+
+
+                <!-- PROJECT 01 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="business web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="aalam.png"
+                                 alt="Aalam Perfumes website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">01 / 09</span>
+                            <span class="project-category">E-Commerce</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Aalam Perfumes</h3>
+
+                            <p>
+                                A premium fragrance shopping experience
+                                designed for a modern perfume brand.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="https://aalamperfumes.com"
+                               target="_blank"
+                               rel="noopener"
+                               class="project-link">
+                                View Project <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+                 <!-- PROJECT 01 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="business web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="aalam.png"
+                                 alt="Aalam Perfumes website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">01 / 09</span>
+                            <span class="project-category">E-Commerce</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Aalam Perfumes</h3>
+
+                            <p>
+                                A premium fragrance shopping experience
+                                designed for a modern perfume brand.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="https://aalamperfumes.com"
+                               target="_blank"
+                               rel="noopener"
+                               class="project-link">
+                                View Project <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 02 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="education web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=Noor+Academy"
+                                 alt="Noor Academy website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">02 / 09</span>
+                            <span class="project-category">Education</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Noor Academy</h3>
+
+                            <p>
+                                An Islamic learning platform designed
+                                for students with interactive lessons.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 03 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="development">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=Abrari+Chat"
+                                 alt="Abrari Chat application preview"
+                                 loading="lazy">
+
+                            <span class="project-number">03 / 09</span>
+                            <span class="project-category">Application</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Abrari Chat</h3>
+
+                            <p>
+                                A real-time messaging application
+                                focused on simple communication.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>Node.js</span>
+                                <span>Express</span>
+                                <span>Socket.IO</span>
+                                <span>JavaScript</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 04 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="business web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=OoraKart"
+                                 alt="OoraKart website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">04 / 09</span>
+                            <span class="project-category">E-Commerce</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>OoraKart</h3>
+
+                            <p>
+                                A modern online shopping interface
+                                for fashion and lifestyle products.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>Bootstrap</span>
+                                <span>JavaScript</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 05 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="education web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=Alumni+Directory"
+                                 alt="Alumni directory website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">05 / 09</span>
+                            <span class="project-category">Directory</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Alumni Directory</h3>
+
+                            <p>
+                                A structured alumni platform for
+                                connecting graduates and institutions.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 06 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="business web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=ShorGlobe"
+                                 alt="ShorGlobe website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">06 / 09</span>
+                            <span class="project-category">Digital Platform</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>ShorGlobe</h3>
+
+                            <p>
+                                A digital platform connecting
+                                technology, education and business.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>Bootstrap</span>
+                                <span>JavaScript</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 07 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="education development">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=Meelad+Dashboard"
+                                 alt="Meelad dashboard preview"
+                                 loading="lazy">
+
+                            <span class="project-number">07 / 09</span>
+                            <span class="project-category">Dashboard</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Meelad Dashboard</h3>
+
+                            <p>
+                                A student management dashboard
+                                with progress and teacher tools.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 08 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="business web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=Islamic+Blog"
+                                 alt="Islamic blog website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">08 / 09</span>
+                            <span class="project-category">Blog</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>Malayalam Blog</h3>
+
+                            <p>
+                                A content-focused Malayalam blog
+                                with a clean reading experience.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="#contact" class="project-link">
+                                Case Study <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- PROJECT 09 -->
+
+                <div class="col-6 col-lg-4 project-item reveal" data-category="development web">
+
+                    <article class="project-card">
+
+                        <div class="project-image">
+
+                            <img src="https://placehold.co/800x550/17251d/39e98a?text=BlinkCodex"
+                                 alt="BlinkCodex website preview"
+                                 loading="lazy">
+
+                            <span class="project-number">09 / 09</span>
+                            <span class="project-category">Agency Website</span>
+
+                        </div>
+
+                        <div class="project-content">
+
+                            <h3>BlinkCodex</h3>
+
+                            <p>
+                                Our digital identity and project
+                                showcase for web development services.
+                            </p>
+
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Bootstrap</span>
+                            </div>
+
+                            <a href="#home" class="project-link">
+                                Current Website <i class="bi bi-arrow-up-right"></i>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SERVICES
+    ========================= -->
+
+    <section class="services-section section-padding" id="services">
+
+        <div class="container">
+
+            <div class="text-center mb-5 reveal">
+
+                <p class="section-label">WHAT WE DO</p>
+
+                <h2 class="section-title">
+                    Our <span class="text-green">Services.</span>
+                </h2>
+
+                <p class="section-description mx-auto mt-3">
+                    From the first idea to the final product,
+                    we focus on building useful digital experiences.
+                </p>
+
+            </div>
+
+
+            <div class="row g-3 g-md-4">
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="service-card">
+
+                        <div class="service-icon">
+                            <i class="bi bi-window"></i>
+                        </div>
+
+                        <h4>Web Design</h4>
+
+                        <p>
+                            Clean, responsive and purposeful
+                            website interfaces.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="service-card">
+
+                        <div class="service-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+
+                        <h4>Development</h4>
+
+                        <p>
+                            Functional web applications
+                            built with modern technologies.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="service-card">
+
+                        <div class="service-icon">
+                            <i class="bi bi-phone"></i>
+                        </div>
+
+                        <h4>App Solutions</h4>
+
+                        <p>
+                            Practical application experiences
+                            for mobile and web.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="service-card">
+
+                        <div class="service-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+
+                        <h4>Technical Support</h4>
+
+                        <p>
+                            Ongoing improvements, maintenance
+                            and technical assistance.
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROCESS
+    ========================= -->
+
+    <section class="section-padding" id="process">
+
+        <div class="container">
+
+            <div class="mb-5 reveal">
+
+                <p class="section-label" style="text-align: center;">HOW WE WORK</p>
+
+                <h2 class="section-title" style="text-align: center;">
+                    A clear path from <span class="text-green">idea to launch.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="process-card">
+
+                        <div class="process-number">01 / DISCOVER</div>
+
+                        <h4>Understand</h4>
+
+                        <p>
+                            We understand the goals, audience
+                            and requirements of the project.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="process-card">
+
+                        <div class="process-number">02 / PLAN</div>
+
+                        <h4>Structure</h4>
+
+                        <p>
+                            We define the layout, features
+                            and technical direction.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="process-card">
+
+                        <div class="process-number">03 / BUILD</div>
+
+                        <h4>Develop</h4>
+
+                        <p>
+                            We turn the approved plan
+                            into a working digital product.
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-6 col-lg-3 reveal">
+                    <div class="process-card">
+
+                        <div class="process-number">04 / DELIVER</div>
+
+                        <h4>Launch</h4>
+
+                        <p>
+                            We test, refine and prepare
+                            the product for delivery.
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT CTA
+    ========================= -->
+
+    <section class="cta-section" id="contact">
+
+        <div class="container">
+
+            <div class="cta-box reveal">
+
+                <p class="section-label">HAVE A PROJECT IN MIND?</p>
+
+                <!--<h2>
+                    Let's build something <span class="text-green">useful.</span>
+                </h2>-->
+
+                <!--<p>
+                    Have an idea, a business or a project that
+                    needs a digital solution? Let's discuss it.
+                </p>-->
+
+                <a href="https://wa.me/919495617110"
+                   target="_blank"
+                   rel="noopener"
+                   class="btn-primary-custom">
+                    Start a Conversation
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <div class="col-12 col-md-6 col-lg-5">
+
+                    <a href="#home" class="footer-brand">
+                        Blink<span>Codex</span>
+                    </a>
+
+                    <p class="footer-description">
+                        A digital development initiative focused on
+                        building practical websites, applications
+                        and technology-driven solutions.
+                    </p>
+
+                </div>
+
+
+                <div class="col-6 col-md-3 col-lg-3">
+
+                    <h5 class="footer-title">EXPLORE</h5>
+
+                    <div class="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#services">Services</a>
+                        <a href="#process">Our Process</a>
+                    </div>
+
+                </div>
+
+
+                <div class="col-6 col-md-3 col-lg-4">
+
+                    <h5 class="footer-title">GET IN TOUCH</h5>
+
+                    <div class="footer-links">
+                        <a href="#contact">Start a Project</a>
+                        <a href="mailto:hello@blinkcodex.com">Email Us</a>
+                        <a href="https://wa.me/91YOURNUMBER" target="_blank" rel="noopener">WhatsApp</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © <span id="year"></span> BlinkCodex.
+                    All rights reserved.
+                </p>
+
+                <p>
+                    Designed & Developed with care.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- WHATSAPP FLOATING BUTTON -->
+
+    <a href="https://wa.me/91YOURNUMBER"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener"
+       aria-label="Chat on WhatsApp">
+
+        <i class="bi bi-whatsapp"></i>
+
+    </a>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        // =========================
+        // SIDEBAR
+        // =========================
+
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        const sidebarClose = document.getElementById("sidebarClose");
+        const sidePanel = document.getElementById("sidePanel");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+        function openSidebar() {
+
+            sidePanel.classList.add("show");
+            sidebarOverlay.classList.add("show");
+
+            document.body.classList.add("sidebar-open");
+
+            sidebarToggle.setAttribute("aria-expanded", "true");
+
+        }
+
+        function closeSidebar() {
+
+            sidePanel.classList.remove("show");
+            sidebarOverlay.classList.remove("show");
+
+            document.body.classList.remove("sidebar-open");
+
+            sidebarToggle.setAttribute("aria-expanded", "false");
+
+        }
+
+        sidebarToggle.addEventListener("click", openSidebar);
+
+        sidebarClose.addEventListener("click", closeSidebar);
+
+        sidebarOverlay.addEventListener("click", closeSidebar);
+
+
+        // =========================
+        // TOP QUICK BAR
+        // =========================
+
+        const topbarToggle = document.getElementById("topbarToggle");
+        const topQuickBar = document.getElementById("topQuickBar");
+        const topbarIcon = document.getElementById("topbarIcon");
+
+        function closeTopbar() {
+
+            topQuickBar.classList.remove("show");
+
+            topbarIcon.classList.remove("bi-chevron-up");
+            topbarIcon.classList.add("bi-chevron-down");
+
+            topbarToggle.setAttribute("aria-expanded", "false");
+
+        }
+
+        topbarToggle.addEventListener("click", function () {
+
+            const isOpen = topQuickBar.classList.toggle("show");
+
+            topbarIcon.classList.toggle("bi-chevron-up", isOpen);
+            topbarIcon.classList.toggle("bi-chevron-down", !isOpen);
+
+            topbarToggle.setAttribute("aria-expanded", String(isOpen));
+
+        });
+
+
+        // =========================
+        // CLOSE MENUS ON LINK CLICK
+        // =========================
+
+        document.querySelectorAll(".side-menu a, .quick-links a").forEach(function(link) {
+
+            link.addEventListener("click", function() {
+
+                closeSidebar();
+                closeTopbar();
+
+            });
+
+        });
+
+
+        // =========================
+        // ESCAPE KEY
+        // =========================
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+
+                closeSidebar();
+                closeTopbar();
+
+            }
+
+        });
+
+
+        // =========================
+        // PROJECT FILTER
+        // =========================
+
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const projectItems = document.querySelectorAll(".project-item");
+
+        filterButtons.forEach(function(button) {
+
+            button.addEventListener("click", function() {
+
+                filterButtons.forEach(function(btn) {
+                    btn.classList.remove("active");
+                });
+
+                button.classList.add("active");
+
+                const filterValue = button.getAttribute("data-filter");
+
+                projectItems.forEach(function(project) {
+
+                    const categories = project.getAttribute("data-category");
+
+                    if (
+                        filterValue === "all" ||
+                        categories.split(" ").includes(filterValue)
+                    ) {
+
+                        project.classList.remove("hide");
+
+                    } else {
+
+                        project.classList.add("hide");
+
+                    }
+
+                });
+
+            });
+
+        });
+
+
+        // =========================
+        // SCROLL REVEAL
+        // =========================
+
+        const revealElements = document.querySelectorAll(".reveal");
+
+        if ("IntersectionObserver" in window) {
+
+            const observer = new IntersectionObserver(function(entries) {
+
+                entries.forEach(function(entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            }, {
+                threshold: 0.12
+            });
+
+            revealElements.forEach(function(element) {
+                observer.observe(element);
+            });
+
+        } else {
+
+            revealElements.forEach(function(element) {
+                element.classList.add("visible");
+            });
+
+        }
+
+
+        // =========================
+        // DYNAMIC YEAR
+        // =========================
+
+        const currentYear = new Date().getFullYear();
+
+        document.getElementById("year").textContent = currentYear;
+
+        document.getElementById("sidebarYear").textContent = currentYear;
+
+
+    </script>
+
+</body>
+</html>
